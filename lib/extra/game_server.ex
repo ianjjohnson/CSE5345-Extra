@@ -32,7 +32,6 @@ defmodule Extra.GameServer do
   end
 
   def handle_call {:guess, guess}, _from, state do
-    IO.inspect state
     cond do
       guess >  state.num -> IO.puts "high"
                             {:reply, :high, state}
