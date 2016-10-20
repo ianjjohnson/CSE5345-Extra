@@ -13,6 +13,10 @@ defmodule Extra.GameServer do
     GenServer.call @me, {:guess, num}
   end
 
+  def start_game do
+    GenServer.call @me, {:start_game}
+  end
+
 
 
   #Implementation
@@ -20,6 +24,11 @@ defmodule Extra.GameServer do
   def init(args) do
     num = :rand.uniform(args.high-args.low+1) + args.low - 1
     {:ok, Map.put(args, :num, num)}
+  end
+
+  def handle_call {:start_game}, _from, state do
+    IO.puts "I'm thinking of a number between #{state.low} and #{state.high}."
+    {:reply, Map.drop(state, [:num]), state}
   end
 
   def handle_call {:guess, guess}, _from, state do
@@ -33,7 +42,5 @@ defmodule Extra.GameServer do
                             {:reply, :yes,  state}
     end
   end
-
-  #IO.puts "I'm thinking of a number between #{Enum.at(args, 0)} and #{Enum.at(args, 1)}."
 
 end
